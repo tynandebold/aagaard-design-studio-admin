@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import Layout from '../components/layout';
+import Row from '../components/Row';
+import Table from '../components/Table';
 
 import { server } from '../config';
 
@@ -21,13 +23,13 @@ class Home extends React.Component {
   }
 
   render() {
-    console.log(this.state.projects);
+    const rows = this.state.projects.map(project => (
+      <Row key={project._id} {...project} />
+    ));
 
     return (
       <Layout>
-        {this.state.projects.map(project => {
-          return <div key={project._id}>{project.title}</div>;
-        })}
+        <Table>{rows}</Table>
       </Layout>
     );
   }
