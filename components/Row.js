@@ -4,5 +4,14 @@ export default ({ image, order, title}) => (
     <td>{title}</td>
     <td>{order}</td>
     <td><button>Delete</button></td>
+    <style jsx>{`
+      tr {
+        border-top: 1px solid #999;
+      }
+
+      td {
+        padding: 1rem 0;
+      }
+    `}</style>
   </tr>
 );

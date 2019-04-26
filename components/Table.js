@@ -27,7 +27,7 @@ export default ({children}) => (
         text-align: left;
       }
 
-      th, td {
+      th {
         padding: 1rem 0;
       }
     `}</style>
