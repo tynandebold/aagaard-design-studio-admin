@@ -10,7 +10,7 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      projects: this.props.projects
+      projects: this.props.data.projects
     };
   }
 
@@ -18,8 +18,9 @@ class Home extends React.Component {
     const res = await fetch(`${server}/api/projects`, {
       headers: { Accept: 'application/json' }
     });
-    const projects = await res.json();
-    return { projects };
+    const data = await res.json();
+
+    return { data };
   }
 
   render() {
@@ -29,6 +30,8 @@ class Home extends React.Component {
 
     return (
       <Layout>
+        <h2>Add new entry</h2>
+        <h2>Current entries</h2>
         <Table>{rows}</Table>
       </Layout>
     );

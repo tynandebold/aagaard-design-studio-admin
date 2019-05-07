@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-export default ({ children, title = 'aagaard design studio' }) => (
+export default ({ children, title = 'aagaard design studio - admin' }) => (
   <div>
     <Head>
       <title>{title}</title>
@@ -17,7 +17,7 @@ export default ({ children, title = 'aagaard design studio' }) => (
       }
     `}</style>
     <header>
-      <h1>aagard design studio</h1>
+      <h1>aagard design studio - admin</h1>
     </header>
 
     {children}
