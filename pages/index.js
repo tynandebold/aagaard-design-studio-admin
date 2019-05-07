@@ -3,8 +3,6 @@ import Layout from '../components/layout';
 import Row from '../components/Row';
 import Table from '../components/Table';
 
-import { server } from '../config';
-
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -14,13 +12,28 @@ class Home extends React.Component {
     };
   }
 
-  static async getInitialProps() {
-    const res = await fetch(`${server}/api/projects`, {
-      headers: { Accept: 'application/json' }
-    });
-    const data = await res.json();
+  static async getInitialProps({ req }) {
+    const isServer = !!req;
 
-    return { data };
+    if (isServer) {
+      const collection = req.app.locals.collection;
+
+      const data = await collection
+        .find({})
+        .toArray()
+        .then(response => {
+          return { projects: response };
+        });
+
+      return { data };
+    } else {
+      const res = await fetch(`/api/projects`, {
+        headers: { Accept: 'application/json' }
+      });
+      const data = await res.json();
+
+      return { data };
+    }
   }
 
   render() {

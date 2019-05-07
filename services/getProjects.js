@@ -6,8 +6,9 @@ module.exports = function() {
       collection
         .find({})
         .toArray()
-        .then(response => resolve(response))
-        .catch(error => reject(error));
+        .then(response => {
+          resolve({ projects: response });
+        });
     });
   });
 };

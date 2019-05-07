@@ -40,7 +40,12 @@ app.prepare().then(() => {
   });
 
   dbConnect.then(collection => {
+    /**
+     * Attach the collection from the DB to the server/req obj, which can
+     * then be retrieved via `req.app.locals.collection`
+     */
     server.locals.collection = collection;
+
     server.listen(port, err => {
       if (err) throw err;
       console.log(`> Ready on http://localhost:${port}`);
