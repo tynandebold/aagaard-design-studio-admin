@@ -26,6 +26,7 @@ class Home extends React.Component {
         .find({})
         .toArray()
         .then(response => {
+          response.sort((a, b) => +a.order - +b.order);
           return { projects: response };
         });
 
@@ -50,10 +51,10 @@ class Home extends React.Component {
     const json = await res.json();
 
     if (json.ok) {
-      console.log(json.data);
-
       this.setState(state => ({
-        projects: state.projects.concat(json.data)
+        projects: state.projects
+          .concat(json.data)
+          .sort((a, b) => +a.order - +b.order)
       }));
     }
   }
@@ -76,8 +77,6 @@ class Home extends React.Component {
   }
 
   render() {
-    console.log(this.state.projects);
-
     const rows = this.state.projects.map(project => (
       <Row
         deleteRecord={this.deleteRecord}

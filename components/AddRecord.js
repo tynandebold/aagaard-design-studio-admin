@@ -2,7 +2,7 @@ class AddRecord extends React.Component {
   state = {
     image: '',
     title: '',
-    order: 0
+    order: ''
   };
 
   handleInputChange = e => {
@@ -14,6 +14,11 @@ class AddRecord extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.addRecord(JSON.stringify(this.state));
+    this.setState({
+      image: '',
+      title: '',
+      order: 0
+    });
   };
 
   render() {
