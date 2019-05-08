@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import Layout from '../components/layout';
 import Row from '../components/Row';
 import Table from '../components/Table';
+import AddRecord from '../components/AddRecord';
 
 class Home extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class Home extends React.Component {
       projects: this.props.data.projects
     };
 
+    this.addRecord = this.addRecord.bind(this);
     this.deleteRecord = this.deleteRecord.bind(this);
   }
 
@@ -38,6 +40,24 @@ class Home extends React.Component {
     }
   }
 
+  async addRecord(data) {
+    const res = await fetch(`/api/project`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: data
+    });
+
+    const json = await res.json();
+
+    if (json.ok) {
+      console.log(json.data);
+
+      this.setState(state => ({
+        projects: state.projects.concat(json.data)
+      }));
+    }
+  }
+
   async deleteRecord(id) {
     if (window.confirm(`Do you really want delete this record?`)) {
       const res = await fetch(`/api/project/${id}`, {
@@ -56,6 +76,8 @@ class Home extends React.Component {
   }
 
   render() {
+    console.log(this.state.projects);
+
     const rows = this.state.projects.map(project => (
       <Row
         deleteRecord={this.deleteRecord}
@@ -67,8 +89,9 @@ class Home extends React.Component {
 
     return (
       <Layout>
-        <h2>Add new entry</h2>
-        <h2>Current entries</h2>
+        <h2 style={{ marginTop: '3rem' }}>Add new entry</h2>
+        <AddRecord addRecord={this.addRecord} />
+        <h2 style={{ marginTop: '3rem' }}>Current entries</h2>
         <Table>{rows}</Table>
       </Layout>
     );

@@ -1,8 +1,4 @@
 class Row extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleDelete = id => {
     this.props.deleteRecord(id);
   };
