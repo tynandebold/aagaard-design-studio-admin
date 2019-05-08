@@ -10,6 +10,8 @@ class Home extends React.Component {
     this.state = {
       projects: this.props.data.projects
     };
+
+    this.deleteRecord = this.deleteRecord.bind(this);
   }
 
   static async getInitialProps({ req }) {
@@ -36,9 +38,31 @@ class Home extends React.Component {
     }
   }
 
+  async deleteRecord(id) {
+    if (window.confirm(`Do you really want delete this record?`)) {
+      const res = await fetch(`/api/project/${id}`, {
+        method: 'DELETE',
+        headers: { 'content-type': 'application/json' }
+      });
+
+      const json = await res.json();
+
+      if (json.ok) {
+        this.setState(state => ({
+          projects: state.projects.filter(project => project._id !== id)
+        }));
+      }
+    }
+  }
+
   render() {
     const rows = this.state.projects.map(project => (
-      <Row key={project._id} {...project} />
+      <Row
+        deleteRecord={this.deleteRecord}
+        key={project._id}
+        projects={this.state.projects}
+        {...project}
+      />
     ));
 
     return (
