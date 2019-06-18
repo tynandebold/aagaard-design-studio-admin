@@ -1,14 +1,17 @@
 const express = require('express');
 const next = require('next');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('express-session');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const dbConnect = require('./db/');
 const api = require('./api/');
+const auth = require('./auth/');
 
 app.prepare().then(() => {
   const server = express();
@@ -23,8 +26,20 @@ app.prepare().then(() => {
     next();
   });
 
+  server.use(
+    session({
+      resave: true,
+      saveUninitialized: true,
+      secret: process.env.SESSION_SECRET
+    })
+  );
+
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());
+  server.use(passport.initialize());
+  server.use(passport.session());
+
+  require('./auth/strategy.js')(passport);
 
   server.get('/_health', (req, res) => {
     res.json({
@@ -33,9 +48,17 @@ app.prepare().then(() => {
     });
   });
 
+  server.use('/auth', auth);
   server.use('/api', api);
 
   server.get('*', (req, res) => {
+    // console.log(req.user);
+
+    // if (!req.user) {
+    //   res.redirect('/login');
+    //   return;
+    // }
+
     return handle(req, res);
   });
 
