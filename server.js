@@ -51,14 +51,11 @@ app.prepare().then(() => {
   server.use('/auth', auth);
   server.use('/api', api);
 
-  server.get('*', (req, res) => {
-    // console.log(req.user);
+  server.get('/login', (req, res) => {
+    return handle(req, res);
+  });
 
-    // if (!req.user) {
-    //   res.redirect('/login');
-    //   return;
-    // }
-
+  server.get('*', isLoggedIn, (req, res) => {
     return handle(req, res);
   });
 
@@ -75,3 +72,15 @@ app.prepare().then(() => {
     });
   });
 });
+
+function isLoggedIn(req, res, next) {
+  if (/_next/g.test(req.path)) {
+    return next();
+  }
+
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect('/login');
+  }
+}

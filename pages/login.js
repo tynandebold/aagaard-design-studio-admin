@@ -15,6 +15,8 @@ class Login extends React.Component {
   };
 
   handleSubmit = e => {
+    console.log('fire');
+
     e.preventDefault();
 
     const data = {
