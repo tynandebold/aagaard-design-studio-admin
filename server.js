@@ -8,6 +8,7 @@ const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+const flash = require('connect-flash');
 
 const dbConnect = require('./db/');
 const api = require('./api/');
@@ -34,12 +35,27 @@ app.prepare().then(() => {
     })
   );
 
+  server.use(flash());
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());
   server.use(passport.initialize());
   server.use(passport.session());
 
-  require('./auth/strategy.js')(passport);
+  auth(passport);
+
+  server.get(
+    '/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+  );
+
+  server.get(
+    '/auth/google/callback',
+    passport.authenticate('google', {
+      successRedirect: '/',
+      failureRedirect: '/error',
+      failureFlash: true
+    })
+  );
 
   server.get('/_health', (req, res) => {
     res.json({
@@ -48,11 +64,14 @@ app.prepare().then(() => {
     });
   });
 
-  server.use('/auth', auth);
   server.use('/api', api);
 
-  server.get('/login', (req, res) => {
-    return handle(req, res);
+  server.get('/error', (req, res) => {
+    const error =
+      req.flash('error')[0] ||
+      "You don't have the appropriate permissions to access this application.";
+
+    res.send(error);
   });
 
   server.get('*', isLoggedIn, (req, res) => {
@@ -81,6 +100,6 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   } else {
-    res.redirect('/login');
+    res.redirect('/auth/google');
   }
 }
