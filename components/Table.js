@@ -1,4 +1,4 @@
-export default ({children}) => (
+export default ({ children }) => (
   <>
     <table>
       <thead>
@@ -6,12 +6,11 @@ export default ({children}) => (
           <th>Image</th>
           <th>Title</th>
           <th>Order</th>
+          <th>Update</th>
           <th>Delete</th>
         </tr>
       </thead>
-      <tbody>
-        {children}
-      </tbody>
+      <tbody>{children}</tbody>
     </table>
     <style jsx>{`
       table {

@@ -9,7 +9,8 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      projects: this.props.data.projects
+      projects: this.props.data.projects,
+      user: this.props.user
     };
 
     this.addRecord = this.addRecord.bind(this);
@@ -30,7 +31,7 @@ class Home extends React.Component {
           return { projects: response };
         });
 
-      return { data };
+      return { data, user: req.user.displayName };
     } else {
       const res = await fetch(`/api/projects`, {
         headers: { Accept: 'application/json' }
@@ -59,6 +60,14 @@ class Home extends React.Component {
     }
   }
 
+  async updateRecord(data) {
+    await fetch(`/api/project/${data.id}`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  }
+
   async deleteRecord(id) {
     if (window.confirm(`Do you really want delete this record?`)) {
       const res = await fetch(`/api/project/${id}`, {
@@ -82,16 +91,20 @@ class Home extends React.Component {
         deleteRecord={this.deleteRecord}
         key={project._id}
         projects={this.state.projects}
+        updateRecord={this.updateRecord}
         {...project}
       />
     ));
 
     return (
       <Layout>
-        <h2 style={{ marginTop: '3rem' }}>Add new entry</h2>
+        <h2 style={{ marginTop: '3.5rem' }}>Add new project</h2>
         <AddRecord addRecord={this.addRecord} />
-        <h2 style={{ marginTop: '3rem' }}>Current entries</h2>
+        <h2 style={{ marginTop: '3.5rem' }}>Current projects</h2>
         <Table>{rows}</Table>
+        <footer style={{ marginTop: '3.5rem' }}>
+          Logged in as <i>{this.state.user}</i>.
+        </footer>
       </Layout>
     );
   }

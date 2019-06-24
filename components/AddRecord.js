@@ -5,7 +5,7 @@ class AddRecord extends React.Component {
     order: ''
   };
 
-  handleInputChange = e => {
+  handleChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -17,7 +17,7 @@ class AddRecord extends React.Component {
     this.setState({
       image: '',
       title: '',
-      order: 0
+      order: ''
     });
   };
 
@@ -29,9 +29,9 @@ class AddRecord extends React.Component {
           <input
             type="text"
             name="image"
-            id="image"
             value={this.state.image}
-            onChange={this.handleInputChange}
+            onChange={this.handleChange}
+            required
           />
         </div>
         <div className="input-wrapper">
@@ -39,9 +39,9 @@ class AddRecord extends React.Component {
           <input
             type="text"
             name="title"
-            id="title"
             value={this.state.title}
-            onChange={this.handleInputChange}
+            onChange={this.handleChange}
+            required
           />
         </div>
         <div className="input-wrapper">
@@ -49,18 +49,18 @@ class AddRecord extends React.Component {
           <input
             type="number"
             name="order"
-            id="order"
             min="0"
             step="1"
             value={this.state.order}
-            onChange={this.handleInputChange}
+            onChange={this.handleChange}
+            required
           />
         </div>
-        <input type="submit" value="Save" />
+        <input className="btn btn--primary" type="submit" value="Save" />
         <style jsx>
           {`
             .new-record {
-              align-items: center;
+              align-items: flex-end;
               display: flex;
               justify-content: space-between;
             }
