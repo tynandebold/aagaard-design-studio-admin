@@ -1,4 +1,4 @@
-class AddRecord extends React.Component {
+class CreateRecord extends React.Component {
   state = {
     image: '',
     title: '',
@@ -13,7 +13,7 @@ class AddRecord extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.addRecord(JSON.stringify(this.state));
+    this.props.createRecord(JSON.stringify(this.state));
     this.setState({
       image: '',
       title: '',
@@ -82,4 +82,4 @@ class AddRecord extends React.Component {
   }
 }
 
-export default AddRecord;
+export default CreateRecord;

@@ -2,20 +2,15 @@ import fetch from 'isomorphic-fetch';
 import Layout from '../components/layout';
 import Row from '../components/Row';
 import Table from '../components/Table';
-import AddRecord from '../components/AddRecord';
+import Toaster from '../components/Toaster';
+import CreateRecord from '../components/CreateRecord';
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      projects: this.props.data.projects,
-      user: this.props.user
-    };
-
-    this.addRecord = this.addRecord.bind(this);
-    this.deleteRecord = this.deleteRecord.bind(this);
-  }
+  state = {
+    projects: this.props.data.projects,
+    toasterType: '',
+    user: this.props.user
+  };
 
   static async getInitialProps({ req }) {
     const isServer = !!req;
@@ -42,7 +37,7 @@ class Home extends React.Component {
     }
   }
 
-  async addRecord(data) {
+  createRecord = async data => {
     const res = await fetch(`/api/project`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -57,18 +52,30 @@ class Home extends React.Component {
           .concat(json.data)
           .sort((a, b) => +a.order - +b.order)
       }));
-    }
-  }
 
-  async updateRecord(data) {
-    await fetch(`/api/project/${data.id}`, {
+      this.setState({ toasterType: 'create-success' });
+    } else {
+      this.setState({ toasterType: 'create-fail' });
+    }
+  };
+
+  updateRecord = async data => {
+    const res = await fetch(`/api/project/${data.id}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(data)
     });
-  }
 
-  async deleteRecord(id) {
+    const json = await res.json();
+
+    if (json.ok) {
+      this.setState({ toasterType: 'update-success' });
+    } else {
+      this.setState({ toasterType: 'update-fail' });
+    }
+  };
+
+  deleteRecord = async id => {
     if (window.confirm(`Do you really want delete this record?`)) {
       const res = await fetch(`/api/project/${id}`, {
         method: 'DELETE',
@@ -81,9 +88,13 @@ class Home extends React.Component {
         this.setState(state => ({
           projects: state.projects.filter(project => project._id !== id)
         }));
+
+        this.setState({ toasterType: 'delete-success' });
+      } else {
+        this.setState({ toasterType: 'update-fail' });
       }
     }
-  }
+  };
 
   render() {
     const rows = this.state.projects.map(project => (
@@ -99,12 +110,13 @@ class Home extends React.Component {
     return (
       <Layout>
         <h2 style={{ marginTop: '3.5rem' }}>Add new project</h2>
-        <AddRecord addRecord={this.addRecord} />
+        <CreateRecord createRecord={this.createRecord} />
         <h2 style={{ marginTop: '3.5rem' }}>Current projects</h2>
         <Table>{rows}</Table>
         <footer style={{ marginTop: '3.5rem' }}>
           Logged in as <i>{this.state.user}</i>.
         </footer>
+        <Toaster type={this.state.toasterType} />
       </Layout>
     );
   }
