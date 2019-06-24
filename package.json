@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -- -r dotenv/config server.js",
+    "dev": "nodemon -- -r dotenv/config server.js -p ${PORT}",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "prestart": "next build",
+    "start": "NODE_ENV=production node server.js -p ${PORT}"
   },
   "keywords": [],
   "author": "",
