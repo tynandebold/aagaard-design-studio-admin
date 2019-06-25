@@ -3,6 +3,7 @@ const next = require('next');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -31,7 +32,12 @@ app.prepare().then(() => {
     session({
       resave: true,
       saveUninitialized: true,
-      secret: process.env.SESSION_SECRET
+      secret: process.env.SESSION_SECRET,
+      store: new MongoStore({
+        url: `mongodb+srv://the-creator-1:${
+          process.env.MONGODB_PASSWORD
+        }@cluster0-n5sxe.mongodb.net/test?retryWrites=true`
+      })
     })
   );
 
