@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "nodemon -- -r dotenv/config server.js -p ${PORT}",
     "build": "next build",
-    "prestart": "next build",
     "start": "NODE_ENV=production node server.js -p ${PORT}"
   },
   "keywords": [],
