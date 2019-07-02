@@ -21,7 +21,7 @@ export default ({ children, title = 'aagaard design studio - admin' }) => (
         background-color: #f7f7f7;
         font-family: Helvetica Neue, Helvetica, sans-serif;
         margin: auto;
-        max-width: 90ch;
+        max-width: 80ch;
         padding: 2ch;
       }
 

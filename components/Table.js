@@ -4,7 +4,6 @@ export default ({ children }) => (
       <thead>
         <tr>
           <th>Image</th>
-          <th>Image URL</th>
           <th>Title</th>
           <th>Order</th>
           <th>Update</th>

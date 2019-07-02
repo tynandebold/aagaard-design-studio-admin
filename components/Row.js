@@ -1,5 +1,6 @@
 class Row extends React.Component {
   state = {
+    hidden: true,
     id: this.props._id,
     image: this.props.image,
     order: this.props.order,
@@ -20,18 +21,26 @@ class Row extends React.Component {
     this.props.deleteRecord(this.state.id);
   };
 
+  toggleHidden = () => {
+    this.setState({ hidden: !this.state.hidden });
+  };
+
   render() {
     const { image, order, title } = this.state;
 
     return (
       <tr>
         <td>
-          <img src={image} alt={title} style={{ maxWidth: '150px' }} />
-        </td>
-        <td>
+          <img
+            alt={title}
+            onClick={this.toggleHidden}
+            src={image}
+            style={{ maxWidth: '150px' }}
+          />
           <input
             name="image"
             onChange={this.handleChange}
+            style={{ display: this.state.hidden ? 'none' : 'block' }}
             type="text"
             value={image}
           />
@@ -40,6 +49,7 @@ class Row extends React.Component {
           <input
             name="title"
             onChange={this.handleChange}
+            style={{ minWidth: '200px' }}
             type="text"
             value={title}
           />
@@ -72,6 +82,10 @@ class Row extends React.Component {
 
           td {
             padding: 1rem 2rem 1rem 0;
+          }
+
+          td:first-child {
+            width: 150px;
           }
 
           .btn--delete {
