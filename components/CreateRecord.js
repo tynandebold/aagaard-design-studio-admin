@@ -68,6 +68,8 @@ class CreateRecord extends React.Component {
             .input-wrapper {
               display: flex;
               flex-direction: column;
+              padding-right: 3rem;
+              width: 100%;
             }
 
             .input-wrapper label {

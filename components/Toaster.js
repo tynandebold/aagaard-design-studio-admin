@@ -51,6 +51,7 @@ class Toaster extends React.Component {
 
     setTimeout(() => {
       this.setState({ classNames: '', message: '' });
+      this.props.reset();
     }, 5500);
   }
 

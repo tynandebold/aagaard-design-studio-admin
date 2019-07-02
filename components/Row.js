@@ -30,21 +30,29 @@ class Row extends React.Component {
         </td>
         <td>
           <input
+            name="image"
+            onChange={this.handleChange}
+            type="text"
+            value={image}
+          />
+        </td>
+        <td>
+          <input
             name="title"
             onChange={this.handleChange}
             type="text"
             value={title}
           />
         </td>
-        <td>
+        <td style={{ width: '40px' }}>
           <input
             min="0"
             onChange={this.handleChange}
             name="order"
             step="1"
             type="number"
-            type="text"
             value={order}
+            style={{ width: '40px' }}
           />
         </td>
         <td>
@@ -63,7 +71,7 @@ class Row extends React.Component {
           }
 
           td {
-            padding: 1rem 0;
+            padding: 1rem 2rem 1rem 0;
           }
 
           .btn--delete {

@@ -21,7 +21,7 @@ export default ({ children, title = 'aagaard design studio - admin' }) => (
         background-color: #f7f7f7;
         font-family: Helvetica Neue, Helvetica, sans-serif;
         margin: auto;
-        max-width: 70ch;
+        max-width: 90ch;
         padding: 2ch;
       }
 
@@ -46,6 +46,7 @@ export default ({ children, title = 'aagaard design studio - admin' }) => (
         font-size: 0.75rem;
         margin-top: 0.25rem;
         padding: 0.25rem;
+        width: 100%;
       }
 
       .btn--primary {

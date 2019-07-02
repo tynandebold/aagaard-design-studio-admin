@@ -96,6 +96,10 @@ class Home extends React.Component {
     }
   };
 
+  resetToaster = () => {
+    this.setState({ toasterType: '' });
+  };
+
   render() {
     const rows = this.state.projects.map(project => (
       <Row
@@ -116,7 +120,7 @@ class Home extends React.Component {
         <footer style={{ marginTop: '3.5rem' }}>
           Logged in as <i>{this.state.user}</i>.
         </footer>
-        <Toaster type={this.state.toasterType} />
+        <Toaster reset={this.resetToaster} type={this.state.toasterType} />
       </Layout>
     );
   }
