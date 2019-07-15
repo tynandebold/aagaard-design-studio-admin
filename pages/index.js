@@ -1,9 +1,11 @@
+import '../layout.css';
+
 import fetch from 'isomorphic-fetch';
 import Layout from '../components/layout';
-import Row from '../components/Row';
-import Table from '../components/Table';
-import Toaster from '../components/Toaster';
-import CreateRecord from '../components/CreateRecord';
+import Row from '../components/admin/Row';
+import Table from '../components/admin/Table';
+import Toaster from '../components/admin/Toaster';
+import CreateRecord from '../components/admin/CreateRecord';
 
 class Home extends React.Component {
   state = {
@@ -112,15 +114,20 @@ class Home extends React.Component {
     ));
 
     return (
-      <Layout>
-        <h2 style={{ marginTop: '3.5rem' }}>Add new project</h2>
-        <CreateRecord createRecord={this.createRecord} />
-        <h2 style={{ marginTop: '3.5rem' }}>Current projects</h2>
-        <Table>{rows}</Table>
-        <footer style={{ marginTop: '3.5rem' }}>
-          Logged in as <i>{this.state.user}</i>.
-        </footer>
-        <Toaster reset={this.resetToaster} type={this.state.toasterType} />
+      <Layout pageClass="admin">
+        <section>
+          <header>
+            <h1>aagard design studio - admin</h1>
+          </header>
+          <h2 style={{ marginTop: '3.5rem' }}>Add new project</h2>
+          <CreateRecord createRecord={this.createRecord} />
+          <h2 style={{ marginTop: '3.5rem' }}>Current projects</h2>
+          <Table>{rows}</Table>
+          <footer style={{ marginTop: '3.5rem' }}>
+            Logged in as <i>{this.state.user}</i>.
+          </footer>
+          <Toaster reset={this.resetToaster} type={this.state.toasterType} />
+        </section>
       </Layout>
     );
   }
