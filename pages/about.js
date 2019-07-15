@@ -3,7 +3,7 @@ import '../layout.css';
 import Layout from '../components/layout';
 import Nav from '../components/public/nav';
 
-const AboutPage = () => (
+const About = () => (
   <Layout darkTheme={false} pageClass="portfolio">
     <section className="left">
       <Nav page="about" />
@@ -34,4 +34,4 @@ const AboutPage = () => (
   </Layout>
 );
 
-export default AboutPage;
+export default About;
