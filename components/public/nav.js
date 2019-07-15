@@ -19,7 +19,7 @@ const Nav = ({ page, projectTitle }) => (
       </>
     ) : (
       <>
-        <Link href="/=">
+        <Link href="/">
           <a
             className="nav-link--first"
             style={{ color: '#0d0d0d', opacity: 0.4 }}

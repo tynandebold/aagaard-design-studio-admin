@@ -35,7 +35,6 @@ class Home extends React.Component {
 
     if (isServer) {
       const collection = req.app.locals.collection;
-      console.log('DATA RECEIVED VIA SERVER');
 
       const data = await collection
         .find({})
@@ -52,7 +51,8 @@ class Home extends React.Component {
       const timeAgo = Date.now() - lengthOfTime;
 
       if (lastVisited > timeAgo) {
-        const data = localStorage.getItem('ads-data');
+        let data = localStorage.getItem('ads-data');
+        data = JSON.parse(data);
         return { data };
       }
 
@@ -64,8 +64,6 @@ class Home extends React.Component {
 
       localStorage.setItem('ads-timestamp', Date.now());
       localStorage.setItem('ads-data', JSON.stringify(data));
-
-      console.log('DATA RECEIVED VIA CLIENT');
 
       return { data };
     }
@@ -101,7 +99,7 @@ class Home extends React.Component {
           <Nav page="home" projectTitle={projects[index].title || ''} />
         </section>
         <section className="right">
-          {!loading && !error && (
+          {!error && (
             <>
               <div className="img-wrapper">
                 <Flickity

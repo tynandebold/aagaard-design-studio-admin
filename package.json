@@ -7,7 +7,8 @@
     "dev": "nodemon -- -r dotenv/config server.js -p ${PORT}",
     "build": "next build",
     "start": "NODE_ENV=production node server.js -p ${PORT}",
-    "deploy": "git push heroku master"
+    "deploy": "git push heroku master",
+    "export": "npm run build && next export"
   },
   "keywords": [],
   "author": "",
