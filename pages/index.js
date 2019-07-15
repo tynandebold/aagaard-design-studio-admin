@@ -24,6 +24,7 @@ class Home extends React.Component {
     friction: 0.5,
     fullscreen: true,
     imagesLoaded: true,
+    lazyLoad: 1,
     pageDots: false,
     selectedAttraction: 0.08,
     setGallerySize: false,
@@ -112,10 +113,10 @@ class Home extends React.Component {
                   static={true}
                 >
                   {projects.map((project, i) => (
-                    <div
+                    <img
                       className="img-container"
                       key={i}
-                      style={{ backgroundImage: `url(${project.image})` }}
+                      data-flickity-lazyload={`${project.image}`}
                     />
                   ))}
                 </Flickity>
