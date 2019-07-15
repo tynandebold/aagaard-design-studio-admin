@@ -7,7 +7,7 @@ import Table from '../components/admin/Table';
 import Toaster from '../components/admin/Toaster';
 import CreateRecord from '../components/admin/CreateRecord';
 
-class Home extends React.Component {
+class Admin extends React.Component {
   state = {
     projects: this.props.data.projects,
     toasterType: '',
@@ -133,4 +133,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default Admin;

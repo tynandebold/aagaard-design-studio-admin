@@ -7,8 +7,8 @@ const Nav = ({ page, projectTitle }) => (
   <nav>
     {page === 'home' ? (
       <>
-        <Link href="/">
-          <a className="nav-link--first" activestyle={{ color: '#fff' }}>
+        <Link href="/portfolio">
+          <a className="nav-link--first" style={{ color: '#fff' }}>
             Work
           </a>
         </Link>
@@ -19,7 +19,7 @@ const Nav = ({ page, projectTitle }) => (
       </>
     ) : (
       <>
-        <Link href="/">
+        <Link href="/portfolio">
           <a
             className="nav-link--first"
             style={{ color: '#0d0d0d', opacity: 0.4 }}
@@ -28,7 +28,7 @@ const Nav = ({ page, projectTitle }) => (
           </a>
         </Link>
         <Link href="/about/">
-          <a activestyle={{ color: '#0d0d0d' }}>Info</a>
+          <a style={{ color: '#0d0d0d' }}>Info</a>
         </Link>
         <Contact />
       </>
