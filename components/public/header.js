@@ -7,7 +7,7 @@ const Header = ({ dark }) => (
         <Link href="/">
           <a
             style={{
-              color: dark ? `white` : `black`,
+              color: dark ? `white` : `#0d0d0d`,
               textDecoration: `none`
             }}
           >
