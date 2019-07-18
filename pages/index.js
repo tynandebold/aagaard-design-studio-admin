@@ -12,6 +12,7 @@ const Flickity =
 
 class Home extends React.Component {
   state = {
+    dataLoaded: this.props.dataLoaded,
     error: null,
     index: 0,
     interval: 375,
@@ -65,7 +66,7 @@ class Home extends React.Component {
       localStorage.setItem("ads-timestamp", Date.now());
       localStorage.setItem("ads-data", JSON.stringify(data));
 
-      return { data };
+      return { data, dataLoaded: true };
     }
   }
 
@@ -79,17 +80,26 @@ class Home extends React.Component {
     if (sessionStorage.getItem("ads-loaded")) {
       this.setState({ loading: false });
       this.setState({ interval: 2250 });
+      this.setState({ dataLoaded: true });
     } else {
       setTimeout(() => {
         this.setState({ loading: false });
         this.setState({ interval: 2250 });
         sessionStorage.setItem("ads-loaded", true);
+        this.setState({ dataLoaded: true });
       }, 3200);
     }
   }
 
   render() {
-    const { error, loading, index, interval, projects } = this.state;
+    const {
+      dataLoaded,
+      error,
+      loading,
+      index,
+      interval,
+      projects
+    } = this.state;
 
     if (error) console.log(error);
 
@@ -103,7 +113,7 @@ class Home extends React.Component {
           <Nav page="home" projectTitle={projects[index].title || ""} />
         </section>
         <section className="right">
-          {!error && (
+          {!error && dataLoaded && (
             <>
               <div className="img-wrapper">
                 <Flickity
