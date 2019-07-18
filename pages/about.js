@@ -1,10 +1,14 @@
-import '../layout.css';
+import "../layout.css";
 
-import Layout from '../components/layout';
-import Nav from '../components/public/nav';
+import Layout from "../components/layout";
+import Nav from "../components/public/nav";
 
 const About = () => (
-  <Layout darkTheme={false} pageClass="portfolio">
+  <Layout
+    darkTheme={false}
+    pageClass="portfolio"
+    title="about · aagaard design studio."
+  >
     <section className="left">
       <Nav page="about" />
     </section>

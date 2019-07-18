@@ -1,15 +1,15 @@
-import Head from 'next/head';
-import Header from '../components/public/header';
+import Head from "next/head";
+import Header from "../components/public/header";
 
 export default ({
   children,
   darkTheme,
   pageClass,
-  title = 'aagaard design studio - admin'
+  title = "admin · aagaard design studio."
 }) => (
   <div
     className={`content-wrapper ${pageClass} ${
-      darkTheme ? 'dark-theme' : 'light-theme'
+      darkTheme ? "dark-theme" : "light-theme"
     }`}
   >
     <Head>
@@ -21,8 +21,29 @@ export default ({
         href="/static/favicon.png"
         type="image/x-icon"
       />
+      <meta
+        name="description"
+        content="A Copenhagen–based, one-man army design studio."
+      />
+      <meta property="og:title" content="home" />
+      <meta
+        property="og:description"
+        content="A Copenhagen–based, one-man army design studio."
+      />
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:creator" content="Frederik Aagaard" />
+      <meta name="twitter:title" content="home" />
+      <meta
+        name="twitter:description"
+        content="A Copenhagen–based, one-man army design studio."
+      />
+      <meta
+        name="keywords"
+        content="aagaard design studio, Frederik Aagaard, design, design studio, creative advisor, creative director, copenhagen, charlie tango, danske bank, denmark"
+      />
     </Head>
-    {pageClass === 'portfolio' && <Header dark={darkTheme} />}
+    {pageClass === "portfolio" && <Header dark={darkTheme} />}
     <main>{children}</main>
   </div>
 );

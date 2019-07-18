@@ -1,13 +1,13 @@
-import '../layout.css';
-import 'flickity/dist/flickity.css';
+import "../layout.css";
+import "flickity/dist/flickity.css";
 
-import Layout from '../components/layout';
-import Loading from '../components/public/loading';
-import Nav from '../components/public/nav';
+import Layout from "../components/layout";
+import Loading from "../components/public/loading";
+import Nav from "../components/public/nav";
 
 const Flickity =
-  typeof window !== 'undefined'
-    ? require('react-flickity-component')
+  typeof window !== "undefined"
+    ? require("react-flickity-component")
     : () => null;
 
 class Home extends React.Component {
@@ -24,7 +24,6 @@ class Home extends React.Component {
     friction: 0.5,
     fullscreen: true,
     imagesLoaded: true,
-    lazyLoad: 1,
     pageDots: false,
     selectedAttraction: 0.08,
     setGallerySize: false,
@@ -47,24 +46,24 @@ class Home extends React.Component {
 
       return { data };
     } else {
-      const lastVisited = localStorage.getItem('ads-timestamp');
+      const lastVisited = localStorage.getItem("ads-timestamp");
       const lengthOfTime = 12 * 60 * 60 * 1000; // 12 hours
       const timeAgo = Date.now() - lengthOfTime;
 
       if (lastVisited > timeAgo) {
-        let data = localStorage.getItem('ads-data');
+        let data = localStorage.getItem("ads-data");
         data = JSON.parse(data);
         return { data };
       }
 
       const res = await fetch(`/api/projects`, {
-        headers: { Accept: 'application/json' }
+        headers: { Accept: "application/json" }
       });
       const resJson = await res.json();
       const data = resJson.projects.sort((a, b) => +a.order - +b.order);
 
-      localStorage.setItem('ads-timestamp', Date.now());
-      localStorage.setItem('ads-data', JSON.stringify(data));
+      localStorage.setItem("ads-timestamp", Date.now());
+      localStorage.setItem("ads-data", JSON.stringify(data));
 
       return { data };
     }
@@ -77,14 +76,14 @@ class Home extends React.Component {
       this.flickityOptions.autoPlay = 2250;
     }
 
-    if (sessionStorage.getItem('ads-loaded')) {
+    if (sessionStorage.getItem("ads-loaded")) {
       this.setState({ loading: false });
       this.setState({ interval: 2250 });
     } else {
       setTimeout(() => {
         this.setState({ loading: false });
         this.setState({ interval: 2250 });
-        sessionStorage.setItem('ads-loaded', true);
+        sessionStorage.setItem("ads-loaded", true);
       }, 3200);
     }
   }
@@ -95,9 +94,13 @@ class Home extends React.Component {
     if (error) console.log(error);
 
     return (
-      <Layout darkTheme={true} pageClass="portfolio">
+      <Layout
+        darkTheme={true}
+        pageClass="portfolio"
+        title="home · aagaard design studio."
+      >
         <section className="left">
-          <Nav page="home" projectTitle={projects[index].title || ''} />
+          <Nav page="home" projectTitle={projects[index].title || ""} />
         </section>
         <section className="right">
           {!error && (
@@ -105,7 +108,7 @@ class Home extends React.Component {
               <div className="img-wrapper">
                 <Flickity
                   flickityRef={c => {
-                    c.on('change', () =>
+                    c.on("change", () =>
                       this.setState({ index: c.selectedIndex })
                     );
                   }}
@@ -113,10 +116,10 @@ class Home extends React.Component {
                   static={true}
                 >
                   {projects.map((project, i) => (
-                    <img
+                    <div
                       className="img-container"
                       key={i}
-                      data-flickity-lazyload={`${project.image}`}
+                      style={{ backgroundImage: `url(${project.image})` }}
                     />
                   ))}
                 </Flickity>
@@ -124,13 +127,13 @@ class Home extends React.Component {
             </>
           )}
           {error && (
-            <p style={{ color: '#fff' }}>
+            <p style={{ color: "#fff" }}>
               An error occurred. Please try again later.
             </p>
           )}
         </section>
         <Loading
-          class={loading ? 'show' : 'hide'}
+          class={loading ? "show" : "hide"}
           interval={interval}
           text="Loading"
         />
