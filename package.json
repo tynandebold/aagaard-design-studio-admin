@@ -7,15 +7,12 @@
     "dev": "nodemon -- -r dotenv/config server.js -p ${PORT}",
     "build": "next build",
     "start": "NODE_ENV=production node server.js -p ${PORT}",
-    "deploy": "git push heroku master",
-    "export": "npm run build && next export"
+    "deploy": "git push heroku master"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@zeit/next-css": "^1.0.1",
-    "autoprefixer": "^9.6.1",
     "body-parser": "^1.18.3",
     "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
@@ -29,8 +26,7 @@
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-flickity-component": "^3.3.0"
+    "react-dom": "^16.8.6"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

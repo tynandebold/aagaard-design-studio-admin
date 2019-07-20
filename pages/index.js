@@ -1,34 +1,15 @@
-import "../layout.css";
-import "flickity/dist/flickity.css";
-
-import Layout from "../components/layout";
-import Loading from "../components/public/loading";
-import Nav from "../components/public/nav";
-
-const Flickity =
-  typeof window !== "undefined"
-    ? require("react-flickity-component")
-    : () => null;
+import fetch from 'isomorphic-fetch';
+import Layout from '../components/layout';
+import Row from '../components/Row';
+import Table from '../components/Table';
+import Toaster from '../components/Toaster';
+import CreateRecord from '../components/CreateRecord';
 
 class Home extends React.Component {
   state = {
-    dataLoaded: this.props.dataLoaded,
-    error: null,
-    index: 0,
-    interval: 375,
-    loading: true,
-    projects: this.props.data || []
-  };
-
-  flickityOptions = {
-    autoPlay: false,
-    friction: 0.5,
-    fullscreen: true,
-    imagesLoaded: true,
-    pageDots: false,
-    selectedAttraction: 0.08,
-    setGallerySize: false,
-    wrapAround: true
+    projects: this.props.data.projects,
+    toasterType: '',
+    user: this.props.user
   };
 
   static async getInitialProps({ req }) {
@@ -42,111 +23,104 @@ class Home extends React.Component {
         .toArray()
         .then(response => {
           response.sort((a, b) => +a.order - +b.order);
-          return response;
+          return { projects: response };
         });
 
-      return { data };
+      return { data, user: req.user.displayName };
     } else {
-      const lastVisited = localStorage.getItem("ads-timestamp");
-      const lengthOfTime = 12 * 60 * 60 * 1000; // 12 hours
-      const timeAgo = Date.now() - lengthOfTime;
-
-      if (lastVisited > timeAgo) {
-        let data = localStorage.getItem("ads-data");
-        data = JSON.parse(data);
-        return { data };
-      }
-
       const res = await fetch(`/api/projects`, {
-        headers: { Accept: "application/json" }
+        headers: { Accept: 'application/json' }
       });
-      const resJson = await res.json();
-      const data = resJson.projects.sort((a, b) => +a.order - +b.order);
+      const data = await res.json();
 
-      localStorage.setItem("ads-timestamp", Date.now());
-      localStorage.setItem("ads-data", JSON.stringify(data));
-
-      return { data, dataLoaded: true };
+      return { data };
     }
   }
 
-  componentDidMount() {
-    this.setState({ loading: true });
+  createRecord = async data => {
+    const res = await fetch(`/api/project`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: data
+    });
 
-    if (window.innerWidth < 660) {
-      this.flickityOptions.autoPlay = 2250;
-    }
+    const json = await res.json();
 
-    if (sessionStorage.getItem("ads-loaded")) {
-      this.setState({ loading: false });
-      this.setState({ interval: 2250 });
-      this.setState({ dataLoaded: true });
+    if (json.ok) {
+      this.setState(state => ({
+        projects: state.projects
+          .concat(json.data)
+          .sort((a, b) => +a.order - +b.order)
+      }));
+
+      this.setState({ toasterType: 'create-success' });
     } else {
-      setTimeout(() => {
-        this.setState({ loading: false });
-        this.setState({ interval: 2250 });
-        sessionStorage.setItem("ads-loaded", true);
-        this.setState({ dataLoaded: true });
-      }, 3200);
+      this.setState({ toasterType: 'create-fail' });
     }
-  }
+  };
+
+  updateRecord = async data => {
+    const res = await fetch(`/api/project/${data.id}`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const json = await res.json();
+
+    if (json.ok) {
+      this.setState({ toasterType: 'update-success' });
+    } else {
+      this.setState({ toasterType: 'update-fail' });
+    }
+  };
+
+  deleteRecord = async id => {
+    if (window.confirm(`Do you really want delete this record?`)) {
+      const res = await fetch(`/api/project/${id}`, {
+        method: 'DELETE',
+        headers: { 'content-type': 'application/json' }
+      });
+
+      const json = await res.json();
+
+      if (json.ok) {
+        this.setState(state => ({
+          projects: state.projects.filter(project => project._id !== id)
+        }));
+
+        this.setState({ toasterType: 'delete-success' });
+      } else {
+        this.setState({ toasterType: 'update-fail' });
+      }
+    }
+  };
+
+  resetToaster = () => {
+    this.setState({ toasterType: '' });
+  };
 
   render() {
-    const {
-      dataLoaded,
-      error,
-      loading,
-      index,
-      interval,
-      projects
-    } = this.state;
-
-    if (error) console.log(error);
+    const rows = this.state.projects.map(project => (
+      <Row
+        deleteRecord={this.deleteRecord}
+        key={project._id}
+        projects={this.state.projects}
+        updateRecord={this.updateRecord}
+        {...project}
+      />
+    ));
 
     return (
-      <Layout
-        darkTheme={true}
-        pageClass="portfolio"
-        title="home · aagaard design studio."
-      >
-        <section className="left">
-          <Nav page="home" projectTitle={projects[index].title || ""} />
-        </section>
-        <section className="right">
-          {!error && dataLoaded && (
-            <>
-              <div className="img-wrapper">
-                <Flickity
-                  flickityRef={c => {
-                    c.on("change", () =>
-                      this.setState({ index: c.selectedIndex })
-                    );
-                  }}
-                  options={this.flickityOptions}
-                  static={true}
-                >
-                  {projects.map((project, i) => (
-                    <div
-                      className="img-container"
-                      key={i}
-                      style={{ backgroundImage: `url(${project.image})` }}
-                    />
-                  ))}
-                </Flickity>
-              </div>
-            </>
-          )}
-          {error && (
-            <p style={{ color: "#fff" }}>
-              An error occurred. Please try again later.
-            </p>
-          )}
-        </section>
-        <Loading
-          class={loading ? "show" : "hide"}
-          interval={interval}
-          text="Loading"
-        />
+      <Layout>
+        <h2 style={{ marginTop: '3.5rem' }}>Add new project</h2>
+        <CreateRecord createRecord={this.createRecord} />
+        <h2 style={{ marginTop: '3.5rem' }}>Current projects</h2>
+        <Table>{rows}</Table>
+        <footer style={{ marginTop: '3.5rem' }}>
+          Logged in as <i>{this.state.user}</i>.
+        </footer>
+        <Toaster reset={this.resetToaster} type={this.state.toasterType} />
       </Layout>
     );
   }

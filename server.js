@@ -82,11 +82,7 @@ app.prepare().then(() => {
     res.send(error);
   });
 
-  server.get('/admin', isLoggedIn, (req, res) => {
-    return handle(req, res);
-  });
-
-  server.get('*', (req, res) => {
+  server.get('*', isLoggedIn, (req, res) => {
     return handle(req, res);
   });
 
