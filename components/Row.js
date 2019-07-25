@@ -1,3 +1,38 @@
+import styled from "styled-components";
+import { Button, Input } from "./shared-styles";
+
+const TableRow = styled.tr`
+  border-top: 1px solid #999;
+`;
+
+const TableCell = styled.td`
+  padding: 1rem 2rem 1rem 0;
+
+  &:first-child {
+    width: 150px;
+  }
+`;
+
+const ButtonPrimary = styled(Button)`
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.background};
+  }
+`;
+
+const ButtonDelete = styled(Button)`
+  border: 2px solid ${({ theme }) => theme.colors.delete};
+  color: ${({ theme }) => theme.colors.delete};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.delete};
+    color: ${({ theme }) => theme.colors.background};
+  }
+`;
+
 class Row extends React.Component {
   state = {
     hidden: true,
@@ -29,76 +64,49 @@ class Row extends React.Component {
     const { image, order, title } = this.state;
 
     return (
-      <tr>
-        <td>
+      <TableRow>
+        <TableCell>
           <img
             alt={title}
             onClick={this.toggleHidden}
             src={image}
-            style={{ maxWidth: '150px' }}
+            style={{ maxWidth: "150px" }}
           />
-          <input
+          <Input
             name="image"
             onChange={this.handleChange}
-            style={{ display: this.state.hidden ? 'none' : 'block' }}
+            style={{ display: this.state.hidden ? "none" : "block" }}
             type="text"
             value={image}
           />
-        </td>
-        <td>
-          <input
+        </TableCell>
+        <TableCell>
+          <Input
             name="title"
             onChange={this.handleChange}
-            style={{ minWidth: '200px' }}
+            style={{ minWidth: "200px" }}
             type="text"
             value={title}
           />
-        </td>
-        <td style={{ width: '40px' }}>
-          <input
+        </TableCell>
+        <TableCell style={{ width: "40px" }}>
+          <Input
             min="0"
             onChange={this.handleChange}
             name="order"
             step="1"
             type="number"
             value={order}
-            style={{ width: '40px' }}
+            style={{ width: "40px" }}
           />
-        </td>
-        <td>
-          <button className="btn btn--primary" onClick={this.handleUpdate}>
-            Update
-          </button>
-        </td>
-        <td>
-          <button className="btn btn--delete" onClick={this.handleDelete}>
-            Delete
-          </button>
-        </td>
-        <style jsx>{`
-          tr {
-            border-top: 1px solid #999;
-          }
-
-          td {
-            padding: 1rem 2rem 1rem 0;
-          }
-
-          td:first-child {
-            width: 150px;
-          }
-
-          .btn--delete {
-            border: 2px solid indianred;
-            color: indianred;
-          }
-
-          .btn--delete:hover {
-            background-color: indianred;
-            color: #f7f7f7;
-          }
-        `}</style>
-      </tr>
+        </TableCell>
+        <TableCell>
+          <ButtonPrimary onClick={this.handleUpdate}>Update</ButtonPrimary>
+        </TableCell>
+        <TableCell>
+          <ButtonDelete onClick={this.handleDelete}>Delete</ButtonDelete>
+        </TableCell>
+      </TableRow>
     );
   }
 }

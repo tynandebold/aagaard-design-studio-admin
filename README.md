@@ -1,16 +1,17 @@
 # aagaard-design-studio-admin
 
-The admin area that feeds [aagaarddesignstudio.com](aagaarddesignstudio.com).
+The admin area that feeds [aagaarddesign.studio](https://aagaarddesign.studio/).
 
-## Tech
+## Technologies
 
 - [Next.js](https://nextjs.org/)
 - [Express](https://expressjs.com/)
 - [Passport](http://www.passportjs.org/)
 - [MongoDB](https://www.mongodb.com/)
 - [Heroku](https://www.heroku.com/)
+- [styled-components](https://www.styled-components.com/)
 
-## Setup
+## Setup and run
 
 Install:
 
@@ -23,6 +24,8 @@ Run:
 ```sh
 $ npm run dev
 ```
+
+## Deploy
 
 Build and deploy:
 
